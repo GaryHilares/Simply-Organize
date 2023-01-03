@@ -1,0 +1,9 @@
+.fixed_table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.no_margin_nor_padding {
+    margin: 0px;
+    padding: 0px;
+}
