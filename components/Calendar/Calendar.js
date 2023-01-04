@@ -22,10 +22,10 @@ function Calendar() {
     const { isLoading, error } = useFetch(
         // Request to make
         "/api/daily-entries/list?" +
-            new URLSearchParams({
-                startDate: today,
-                endDate: addDaysToDate(today, loadedWeeks * 7),
-            }),
+        new URLSearchParams({
+            startDate: today,
+            endDate: addDaysToDate(today, loadedWeeks * 7),
+        }),
         // Hook dependencies
         [loadedWeeks],
         // Result parser
@@ -77,7 +77,7 @@ function Calendar() {
                         fetch("/api/daily-entries/create", {
                             method: "POST",
                             body: JSON.stringify({
-                                date: formData.date.toDateString(),
+                                date: formData.date.toString(),
                                 description: formData.description,
                             }),
                         });

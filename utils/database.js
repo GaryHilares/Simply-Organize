@@ -10,7 +10,7 @@ function getDatabase() {
         // Connect to cluster
         console.log("Connecting to MongoDB Atlas cluster...");
         let mongoClient = new MongoClient(
-            `mongodb://${dbUsername}:${dbPassword}@${dbHostname}/?retryWrites=true&w=majority`,
+            `mongodb+srv://${dbUsername}:${dbPassword}@${dbHostname}/?retryWrites=true&w=majority`,
             {
                 connectTimeoutMS: 10000,
             }
