@@ -1,4 +1,4 @@
-import { getDatabase } from "../../../utils/database.js";
+import sqlite3 from "sqlite3";
 
 // Create/Update daily entries
 export default async function handler(req, res) {
@@ -8,20 +8,20 @@ export default async function handler(req, res) {
         return;
     }
 
-    // Iterate over changes
-    let element = JSON.parse(req.body);
-    const date = new Date(element.date);
-    if (date.toString() === "Invalid Date") {
+    // Iterate over change
+    const description = req.body.description;
+    const date = parseInt(req.body.date);
+    if (date == NaN) {
         res.status(400).send({ message: "Date is invalid" });
         return;
     }
 
     // Connect to database
-    let db = getDatabase();
-    let dailyEntries = db.collection("daily-entries");
+    let db = new sqlite3.Database("data.db");
 
     // Update database
-    dailyEntries.updateOne({ date: date }, { $set: { description: element.description } }, { upsert: true });
+    db.run('INSERT OR REPLACE INTO tasks (date, description) VALUES (?, ?);', date, description);
+    // db.run('UPDATE tasks SET description = ? WHERE date = ?;', description, date);
 
     // Send response
     res.status(200).send({ message: "Updated successfully" });

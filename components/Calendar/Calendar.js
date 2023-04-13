@@ -5,55 +5,43 @@ import { addDaysToDate, createArrayFromRange } from "../../utils/objects-helpers
 import { NoteEditorModal } from "./NoteEditorModal";
 import styles from "../../styles/Calendar.module.css";
 
+function getUnixTimeStamp(datetime) {
+    return Math.floor(datetime.getTime() / 1000);
+}
+
 function Calendar() {
     // Creates a date representing today, ignoring the time of the day
     const today = new Date(new Date().toDateString());
-
-    // Sets a state representing the weeks that have been loaded
     const [loadedWeeks, setLoadedWeeks] = useState(25);
-
-    // Sets a state representing key-value pairs of dates to descriptions
-    const [dailyEntries, setDailyEntries] = useState({});
-
-    // Sets a state representing the information of the edit modal
+    const [tasks, setTasks] = useState({});
     const [formData, setFormData] = useState({ displaying: false, date: null, description: null });
 
     // Fetches information from the server
     const { isLoading, error } = useFetch(
-        // Request to make
-        "/api/daily-entries/list?" +
+        "/api/tasks/list?" +
         new URLSearchParams({
-            startDate: today,
-            endDate: addDaysToDate(today, loadedWeeks * 7),
+            startDate: getUnixTimeStamp(today),
+            endDate: getUnixTimeStamp(addDaysToDate(today, loadedWeeks * 7)),
         }),
-        // Hook dependencies
         [loadedWeeks],
-        // Result parser
         async (data) => {
             // Convert JSON data to object
-            const parsedJson = await data.json();
-
-            /*
-                Map an array of dictionaries to a dictionary.
-                [{"date": ${date}, "description": ${description}}, ...] becomes {${date}: ${description}}
-                Extracted from: https://dev.to/devtronic/javascript-map-an-array-of-objects-to-a-dictionary-3f42
-            */
-            let transformedData = Object.assign(
+            const unparsedTasks = await data.json();
+            const mappedTasks = Object.assign(
                 {},
-                ...parsedJson.map((el) => ({
-                    [new Date(el.date).toDateString()]: el.description,
+                ...unparsedTasks.map((task) => ({
+                    [new Date(task.date * 1000).toDateString()]: task.description,
                 }))
             );
 
-            // Assigns the information to daily entries
-            setDailyEntries(transformedData);
+            // Assigns the information to tasks
+            setTasks(mappedTasks);
         }
     );
 
     // Renders the element
     return (
         <>
-            {/* Display modal if needed */}
             {formData.displaying && (
                 <NoteEditorModal
                     value={formData.description}
@@ -74,18 +62,19 @@ function Calendar() {
                     }}
                     handleSubmit={() => {
                         // Submit changes to backend
-                        fetch("/api/daily-entries/create", {
+                        fetch("/api/tasks/create", {
                             method: "POST",
+                            headers: new Headers({ 'Content-Type': 'application/json' }),
                             body: JSON.stringify({
-                                date: formData.date.toString(),
+                                date: Math.floor(formData.date.getTime() / 1000),
                                 description: formData.description,
                             }),
                         });
 
-                        // Update frontend daily entries
-                        setDailyEntries((oldDailyEntries) => {
+                        // Update frontend tasks
+                        setTasks((oldTasks) => {
                             return {
-                                ...oldDailyEntries,
+                                ...oldTasks,
                                 [formData.date.toDateString()]: formData.description,
                             };
                         });
@@ -136,9 +125,10 @@ function Calendar() {
                                                     return (
                                                         <td key={daysFromNow} className={styles.no_margin_nor_padding}>
                                                             <DayBox
+
                                                                 currentDate={currentDate}
                                                                 daysFromNow={daysFromNow}
-                                                                content={dailyEntries[currentDate.toDateString()] ?? ""}
+                                                                content={tasks[currentDate.toDateString()] ?? ""}
                                                                 handleInput={(date, description) => {
                                                                     setFormData({
                                                                         displaying: true,
