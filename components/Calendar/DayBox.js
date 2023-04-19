@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.css";
 import { parseFormat } from "../../utils/parsers";
 
 function DayBox(props) {
@@ -16,13 +17,12 @@ function DayBox(props) {
         daysFromNow >= 0 && (
             <div className="clearfix">
                 <span>
-                    {`${currentDate.getDate()} ${
-                        doRenderMonth
+                    {`${currentDate.getDate()} ${doRenderMonth
                             ? currentDate.toLocaleString("default", {
-                                  month: "long",
-                              })
+                                month: "long",
+                            })
                             : ""
-                    } ${doRenderYear ? currentDate.getFullYear() : ""}`}
+                        } ${doRenderYear ? currentDate.getFullYear() : ""}`}
                 </span>
                 <button
                     className="btn btn-secondary btn-sm float-end m-1"
