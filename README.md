@@ -35,7 +35,7 @@ With SimplyOrganize, I expect to create a solution for such problem by providing
 - Go to `localhost:3000` (or your default NextJS port) and you will see the application running!
 
 ## License
-This work is licensed under a Creative Commons Attribution 4.0 International License.
+This work is licensed under a [Creative Commons Attribution 4.0 International License](https://github.com/GaryHilares/Simply-Organize/blob/main/LICENSE).
 
 ## Contributors
 This project was made by Gary Hilares. If you would like to collaborate, please feel free to reach out to me on [GitHub](https://github.com/GaryStriving) or by [email](mailto:garystriving@gmail.com).
