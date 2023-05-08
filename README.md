@@ -1,4 +1,13 @@
-# SimplyOrganize
+<h1 align="center">Simply Organize</h1>
+
+<p align="center">
+  <img alt="badge-lastcommit" src="https://img.shields.io/github/last-commit/GaryHilares/Simply-Organize?style=for-the-badge">
+  <img alt="badge-openissues" src="https://img.shields.io/github/issues-raw/GaryHilares/Simply-Organize?style=for-the-badge">
+  <img alt="badge-license" src="https://img.shields.io/github/license/GaryHilares/Simply-Organize?style=for-the-badge">
+  <img alt="badge-contributors" src="https://img.shields.io/github/contributors/GaryHilares/Simply-Organize?style=for-the-badge">
+  <img alt="badge-codesize" src="https://img.shields.io/github/languages/code-size/GaryHilares/Simply-Organize?style=for-the-badge">
+</p>
+
 #### Video Demo created for CS50x: https://youtu.be/b26DFdzpijE
 ## Description
 SimplyOrganize is a simple yet powerful calendar application with just the exact features to organize yourself. It runs on NodeJS with Next.js as frontend, Next.js API Routes as backend, and SQLite as the database.
